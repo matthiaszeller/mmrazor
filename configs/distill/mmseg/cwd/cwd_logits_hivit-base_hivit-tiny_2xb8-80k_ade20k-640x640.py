@@ -6,8 +6,8 @@ _base_ = [
 ]
 
 teacher_ckpt = '../mmsegmentation/checkpoints/mae_hivit2_base_1600ep_ft100ep.pth'
-teacher_cfg_path = 'mmseg::hivit2/hivit-base_upernet_1xb16-80k_ade-640x640.py'  # noqa: E501
-student_cfg_path = 'mmseg::hivit2/hivit-tiny_upernet_1xb16-80k_ade-640x640.py'  # noqa: E501
+teacher_cfg_path = 'mmseg::hivit2/hivit-base_upernet_1xb16-80k-amp_ade-640x640.py'  # noqa: E501
+student_cfg_path = 'mmseg::hivit2/hivit-tiny_upernet_1xb16-80k-amp_ade-640x640.py'  # noqa: E501
 
 model = dict(
     _scope_='mmrazor',
@@ -46,6 +46,33 @@ model = dict(
     )
 )
 
-find_unused_parameters = True
+#find_unused_parameters = True
 
 val_cfg = dict(_delete_=True, type='mmrazor.SingleTeacherDistillValLoop')
+
+optim_wrapper = dict(
+    _delete_=True,
+    type='OptimWrapper',
+    optimizer=dict(
+        type='AdamW', lr=0.00006, betas=(0.9, 0.999), weight_decay=0.01),
+    paramwise_cfg=dict(
+        custom_keys={
+            'absolute_pos_embed': dict(decay_mult=0.),
+            'relative_position_bias_table': dict(decay_mult=0.),
+            'norm': dict(decay_mult=0.)
+        }))
+
+param_scheduler = [
+    dict(
+        type='LinearLR', start_factor=1e-6, by_epoch=False, begin=0, end=1500),
+    dict(
+        type='PolyLR',
+        eta_min=0.0,
+        power=1.0,
+        begin=1500,
+        end=160000,
+        by_epoch=False,
+    )
+]
+
+train_dataloader = dict(batch_size=8)
