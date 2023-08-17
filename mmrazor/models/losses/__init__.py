@@ -4,6 +4,7 @@ from .at_loss import ATLoss
 from .crd_loss import CRDLoss
 from .cross_entropy_loss import CrossEntropyLoss
 from .cwd import ChannelWiseDivergence
+from .dacwd import DimensionAdaptiveChannelWiseDivergence
 from .dafl_loss import ActivationLoss, InformationEntropyLoss, OnehotLikeLoss
 from .decoupled_kd import DKDLoss
 from .dist_loss import DISTLoss
@@ -24,5 +25,5 @@ __all__ = [
     'WSLD', 'L2Loss', 'ABLoss', 'DKDLoss', 'KDSoftCELoss', 'ActivationLoss',
     'OnehotLikeLoss', 'InformationEntropyLoss', 'FTLoss', 'ATLoss', 'OFDLoss',
     'L1Loss', 'FBKDLoss', 'CRDLoss', 'CrossEntropyLoss', 'PKDLoss', 'MGDLoss',
-    'DISTLoss'
+    'DISTLoss', 'DimensionAdaptiveChannelWiseDivergence'
 ]
