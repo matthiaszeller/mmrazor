@@ -6,8 +6,8 @@ _base_ = [
 ]
 
 teacher_ckpt = '../mmsegmentation/checkpoints/hivit-base-in1k-pre_upernet_4xb8-80k-amp_ade-640x640_iter-56k.pth'
-teacher_cfg_path = 'mmseg::hivit2/hivit-base-in1k-pre_upernet_4xb6-80k-amp_ade-640x640.py'  # noqa: E501
-student_cfg_path = 'mmseg::hivit2/hivit-tiny-in1k-pre_upernet_4xb6-80k-amp_ade-640x640.py'  # noqa: E501
+teacher_cfg_path = 'mmseg::hivit2/kd_hivit-base-in1k-pre_upernet_4xb6-80k-amp_ade-640x640.py'  # noqa: E501
+student_cfg_path = 'mmseg::hivit2/kd_hivit-tiny-in1k-pre_upernet_4xb6-80k-amp_ade-640x640.py'  # noqa: E501
 
 model = dict(
     _scope_='mmrazor',
@@ -76,3 +76,6 @@ param_scheduler = [
 ]
 
 train_dataloader = dict(batch_size=8)
+
+train_cfg = dict(val_interval=250)
+default_hooks = dict(checkpoint=dict(interval=500))
