@@ -5,9 +5,9 @@ _base_ = [
     'mmseg::_base_/default_runtime.py'
 ]
 
-teacher_ckpt = '../mmsegmentation/checkpoints/mae_hivit2_base_1600ep_ft100ep.pth'
-teacher_cfg_path = 'mmseg::hivit2/hivit-base_upernet_1xb16-80k-amp_ade-640x640.py'  # noqa: E501
-student_cfg_path = 'mmseg::hivit2/hivit-tiny_upernet_1xb16-80k-amp_ade-640x640.py'  # noqa: E501
+teacher_ckpt = '../mmsegmentation/checkpoints/hivit-base-in1k-pre_upernet_4xb8-80k-amp_ade-640x640_iter-56k.pth'
+teacher_cfg_path = 'mmseg::hivit2/hivit-base-in1k-pre_upernet_4xb6-80k-amp_ade-640x640.py'  # noqa: E501
+student_cfg_path = 'mmseg::hivit2/hivit-tiny-in1k-pre_upernet_4xb6-80k-amp_ade-640x640.py'  # noqa: E501
 
 model = dict(
     _scope_='mmrazor',
@@ -70,7 +70,7 @@ param_scheduler = [
         eta_min=0.0,
         power=1.0,
         begin=1500,
-        end=160000,
+        end=80000,
         by_epoch=False,
     )
 ]
