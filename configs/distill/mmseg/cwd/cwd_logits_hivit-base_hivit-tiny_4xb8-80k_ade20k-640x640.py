@@ -5,9 +5,9 @@ _base_ = [
     'mmseg::_base_/default_runtime.py'
 ]
 
-teacher_ckpt = '../mmsegmentation/checkpoints/hivit-base-in1k-pre_upernet_4xb8-80k-amp_ade-640x640_iter-56k.pth'
-teacher_cfg_path = 'mmseg::hivit2/kd_hivit-base-in1k-pre_upernet_4xb6-80k-amp_ade-640x640.py'  # noqa: E501
-student_cfg_path = 'mmseg::hivit2/kd_hivit-tiny-in1k-pre_upernet_4xb6-80k-amp_ade-640x640.py'  # noqa: E501
+teacher_ckpt = '../mmsegmentation/checkpoints/hivit-base-in1k-pre_upernet_4xb6-80k-amp_ade-640x640_iter-56000.pth'
+teacher_cfg_path = 'mmseg::hivit2/hivit-base-in1k-pre_upernet_4xb6-80k-amp_ade-640x640.py'  # noqa: E501
+student_cfg_path = 'mmseg::hivit2/hivit-tiny_upernet_4xb6-80k-amp_ade-640x640.py'  # noqa: E501
 
 model = dict(
     _scope_='mmrazor',
@@ -64,12 +64,12 @@ optim_wrapper = dict(
 
 param_scheduler = [
     dict(
-        type='LinearLR', start_factor=1e-6, by_epoch=False, begin=0, end=1500),
+        type='LinearLR', start_factor=1e-6, by_epoch=False, begin=0, end=750),
     dict(
         type='PolyLR',
         eta_min=0.0,
         power=1.0,
-        begin=1500,
+        begin=750,
         end=80000,
         by_epoch=False,
     )
@@ -77,5 +77,5 @@ param_scheduler = [
 
 train_dataloader = dict(batch_size=8)
 
-train_cfg = dict(val_interval=250)
-default_hooks = dict(checkpoint=dict(interval=500))
+train_cfg = dict(val_interval=500)
+default_hooks = dict(checkpoint=dict(interval=500, max_keep_ckpts=5))
